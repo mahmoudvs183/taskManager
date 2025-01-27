@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks</title>
+    <link rel="stylesheet" href="css/taskMain.css">
+</head>
+
+<body>
+    <!-- main Nav -->
+
+    <div class="backdrop-container fade" id="backdrop"></div>
+    <div class="topnav header" id="myTopnav">
+        <div class="flex-div1">
+            <a href="./index.html" class="active">
+                <img src="image/logo.png" alt="Robotics-logo" class="logo-img">
+            </a>
+            <div class="flex-responsive"></div>
+            <div class="navbar-toggle" id="js-navbar-toggle" aria-label="Toggle navigation" onclick="navButtonClick()">
+                <div class="burger"></div>
+            </div>
+        </div>
+        <div class="flex-div2 fade" id="flex-2">
+            <a >Profile</a>
+            <a onclick="togglePages(this.id)" id="tasksSection">Tasks</a>
+            <a onclick="togglePages(this.id)" id="addNewTaskSection">Add New Task</a>
+            <a onclick="togglePages(this.id)" id="memberTasksSection">Member Tasks</a>
+        </div>
+    </div>
+
+    <div id="tasksPage" class="tasksPage">
+        <div class="container">
+            <!-- Task Controls -->
+            <div class="task-controls">
+                <!-- Filtering Section -->
+                <div class="filter-section">
+                    <label>Filter by:</label>
+                    <select id="priorityFilter">
+                        <option value="">All Priorities</option>
+                        <option value="low">Low Priority</option>
+                        <option value="medium">Medium Priority</option>
+                        <option value="high">High Priority</option>
+                    </select>
+                    <select id="statusFilter">
+                        <option value="">All Statuses</option>
+                        <option value="todo">To Do</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <!-- <input type="text" id="searchInput" placeholder="Search tasks..."> -->
+                </div>
+
+                <!-- Sorting Section -->
+                <div class="sort-section">
+                    <label>Sort by:</label>
+                    <select id="sortSelect">
+                        <option value="dueDate">Due Date</option>
+                        <option value="priority">Priority</option>
+                        <option value="title">Title</option>
+                    </select>
+                    <select id="sortOrder">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Task List -->
+            <div class="task-list" id="taskList">
+                <div class="task-card medium">
+                    <h3>Marketing Campaign</h3>
+                    <p><strong>medium</strong> Priority</p>
+                    <p>Develop quarterly digital marketing strategy</p>
+                    <p>Due: Apr 1, 2024</p>
+                    <p>Assigned: Mike Johnson</p>
+                    <button>Edit</button>
+                    <button>Delete</button>
+                </div>
+            
+                <div class="task-card high">
+                    <h3>Design Website</h3>
+                    <p><strong>high</strong> Priority</p>
+                    <p>Create a new responsive website design</p>
+                    <p>Due: Mar 15, 2024</p>
+                    <p>Assigned: John Doe, Jane Smith</p>
+                    <button>Edit</button>
+                    <button>Delete</button>
+                </div>
+            
+                <div class="task-card medium">
+                    <h3>Marketing Campaign</h3>
+                    <p><strong>medium</strong> Priority</p>
+                    <p>Develop quarterly digital marketing strategy</p>
+                    <p>Due: Apr 1, 2024</p>
+                    <p>Assigned: Mike Johnson</p>
+                    <button>Edit</button>
+                    <button>Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="addNewTask" class="addNewTask">
+        <div class="container">
+            <!-- Task Creation Form -->
+            <div class="task-form">
+                <h2>Create New Task</h2>
+                <form id="taskForm">
+                    <input type="text" id="taskTitle" placeholder="Task Title" required>
+
+                    <textarea id="taskDescription" placeholder="Task Description" required></textarea>
+
+                    <label>Due Date:</label>
+                    <input type="date" id="taskDueDate" required>
+
+                    <label>Assign Team Members:</label>
+                    <select id="taskMembers" multiple>
+                        <option value="1">John Doe</option>
+                        <option value="2">Jane Smith</option>
+                        <option value="3">Mike Johnson</option>
+                        <option value="4">Sarah Williams</option>
+                    </select>
+
+                    <label>Priority:</label>
+                    <select id="taskPriority">
+                        <option value="low">Low Priority</option>
+                        <option value="medium">Medium Priority</option>
+                        <option value="high">High Priority</option>
+                    </select>
+
+                    <button type="submit">Add Task</button>
+                </form>
+            </div>
+
+            <!-- Task List -->
+            <div class="task-list" id="taskList"></div>
+
+            <!-- Edit Modal -->
+            <div class="modal-overlay" id="modalOverlay"></div>
+            <div class="edit-modal" id="editModal">
+                <h2>Edit Task</h2>
+                <form id="editTaskForm">
+                    <input type="hidden" id="editTaskId">
+                    <input type="text" id="editTaskTitle" required placeholder="Task Title">
+                    <textarea id="editTaskDescription" required placeholder="Task Description"></textarea>
+                    <input type="date" id="editTaskDueDate" required>
+
+                    <label>Assigned Members:</label>
+                    <select id="editTaskMembers" multiple>
+                        <option value="1">John Doe</option>
+                        <option value="2">Jane Smith</option>
+                        <option value="3">Mike Johnson</option>
+                        <option value="4">Sarah Williams</option>
+                    </select>
+
+                    <label>Priority:</label>
+                    <select id="editTaskPriority">
+                        <option value="low">Low Priority</option>
+                        <option value="medium">Medium Priority</option>
+                        <option value="high">High Priority</option>
+                    </select>
+
+                    <div class="task-actions">
+                        <button type="submit">Save Changes</button>
+                        <button type="button" id="cancelEdit">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Member Task Page -->
+    <div id="memberTasks" class="memberTasks">
+        <div class="container">
+            <div class="team-container">
+                <!-- Members List -->
+                <div class="members-list" id="membersList">
+                    <h2>Team Members</h2>
+                    <!-- Members will be dynamically added here -->
+                    <div class="contact-card">
+                        <h3>John Doe</h3>
+                        <p>Developer</p>
+                        <p>john@example.com</p>
+                    </div>
+                
+                    <div class="contact-card">
+                        <h3>Jane Smith</h3>
+                        <p>Designer</p>
+                        <p>jane@example.com</p>
+                    </div>
+                
+                    <div class="contact-card">
+                        <h3>Mike Johnson</h3>
+                        <p>Project Manager</p>
+                        <p>mike@example.com</p>
+                    </div>
+                </div>
+
+                <!-- Member Details -->
+                <div class="member-details" id="memberDetails">
+                    <h2 id="selectedMemberName">Select a Member</h2>
+
+                    <!-- Task Creation Form -->
+                    <div class="task-form">
+                        <h3>Add New Task</h3>
+                        <form id="taskForm">
+                            <input type="hidden" id="memberId">
+                            <input type="text" id="taskTitle" placeholder="Task Title" required>
+                            <textarea id="taskDescription" placeholder="Task Description" required></textarea>
+
+                            <label>Due Date:</label>
+                            <input type="date" id="taskDueDate" required>
+
+                            <label>Priority:</label>
+                            <select id="taskPriority">
+                                <option value="low">Low Priority</option>
+                                <option value="medium">Medium Priority</option>
+                                <option value="high">High Priority</option>
+                            </select>
+
+                            <label>Task Status:</label>
+                            <select id="taskStatus">
+                                <option value="todo">To Do</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </select>
+
+                            <button type="submit">Add Task</button>
+                        </form>
+                    </div>
+
+                    <!-- Tasks List -->
+                    <div class="task-list" id="taskList">
+                        <!-- Tasks will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/taskMain.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/header.js"></script>
+</body>
+
+</html>
